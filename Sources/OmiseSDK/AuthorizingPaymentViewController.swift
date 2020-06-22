@@ -153,7 +153,7 @@ public class AuthorizingPaymentViewController: UIViewController {
             os_log("Authorization process was cancelled, trying to notify the delegate", log: uiLogObject, type: .info)
         }
         delegate?.authorizingPaymentViewControllerDidCancel(self)
-        if delegate == nil, #available(iOS 10.0, *) {
+        if delegate == nil, #available(iOSApplicationExtension 10.0, *) {
             os_log("Authorization process was cancelled but no delegate to be notified", log: uiLogObject, type: .default)
         }
     }
@@ -161,7 +161,7 @@ public class AuthorizingPaymentViewController: UIViewController {
     private func startAuthorizingPaymentProcess() {
         guard let authorizedURL = authorizedURL, !expectedReturnURLPatterns.isEmpty else {
             assertionFailure("Insufficient authorizing payment information")
-            if #available(iOSApplicationExtension 10.0, *) {
+            if #available(iOS 10.0, *) {
                 os_log("Refusing to initialize sdk client with a non-public key: %{private}@", log: uiLogObject, type: .error)
             }
             return
@@ -188,7 +188,7 @@ public class AuthorizingPaymentViewController: UIViewController {
 extension AuthorizingPaymentViewController: WKNavigationDelegate {
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Swift.Void) {
         if let url = navigationAction.request.url, verifyPaymentURL(url) {
-            if #available(iOSApplicationExtension 10.0, *) {
+            if #available(iOS 10.0, *) {
                 os_log("Redirected to expected %{private}@ URL, trying to notify the delegate", log: uiLogObject, type: .info, url.absoluteString)
             }
             decisionHandler(.cancel)
