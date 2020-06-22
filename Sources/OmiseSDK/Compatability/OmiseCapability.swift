@@ -45,9 +45,9 @@ class __OmiseCapabilityCardBackendPayment: __OmiseCapabilityBackendPayment {
     }
 }
 
-@objc(OMSCapabilitySourceBackend) public
+//@objc(OMSCapabilitySourceBackend) public
 class __OmiseCapabilitySourceBackendPayment: __OmiseCapabilityBackendPayment {
-    @objc public let type: OMSSourceTypeValue
+     public let type: OMSSourceTypeValue
     
     init(sourceType: OMSSourceTypeValue) {
         self.type = sourceType
@@ -74,11 +74,11 @@ class __OmiseCapabilitySourceBackendPayment: __OmiseCapabilityBackendPayment {
     static func makeInternetBankingSourceBackendPayment(
         bank: PaymentInformation.InternetBanking
         ) -> __OmiseCapabilitySourceBackendPayment {
-        return __OmiseCapabilitySourceBackendPayment(sourceType: OMSSourceTypeValue(bank.type))
+        return __OmiseCapabilitySourceBackendPayment(sourceType: OMSSourceTypeValue(rawValue: bank.type)!)
     }
 }
 
-@objc(OMSCapabilityInstallmentBackend) public
+//@objc(OMSCapabilityInstallmentBackend) public
 class __OmiseCapabilityInstallmentBackendPayment: __OmiseCapabilitySourceBackendPayment {
     @objc public let availableNumberOfTerms: IndexSet
     
@@ -88,12 +88,12 @@ class __OmiseCapabilityInstallmentBackendPayment: __OmiseCapabilitySourceBackend
     }
 }
 
-@objc(OMSCapabilityUnknownSourceBackend) public
+//@objc(OMSCapabilityUnknownSourceBackend) public
 class __OmiseCapabilityUnknownSourceBackendPayment: __OmiseCapabilitySourceBackendPayment {
     @objc public let parameters: [String: Any]
     init(sourceType: String, parameters: [String: Any]) {
         self.parameters = parameters
-        super.init(sourceType: OMSSourceTypeValue(rawValue: sourceType))
+        super.init(sourceType: OMSSourceTypeValue(rawValue: sourceType) ?? .payNow)
     }
 }
 
@@ -104,12 +104,12 @@ extension __OmiseCapabilityBackendPayment {
             return __OmiseCapabilityCardBackendPayment(supportedBrands: Set(brands.map({ $0.description })))
         case .installment(let brand, availableNumberOfTerms: let availableNumberOfTerms):
             return __OmiseCapabilityInstallmentBackendPayment(
-                sourceType: OMSSourceTypeValue(brand.type), availableNumberOfTerms: availableNumberOfTerms
+                sourceType: OMSSourceTypeValue(rawValue: brand.type)!, availableNumberOfTerms: availableNumberOfTerms
             )
         case .internetBanking(let bank):
             return __OmiseCapabilitySourceBackendPayment.makeInternetBankingSourceBackendPayment(bank: bank)
         case .billPayment(let billPayment):
-            return __OmiseCapabilitySourceBackendPayment(sourceType: OMSSourceTypeValue(billPayment.type))
+            return __OmiseCapabilitySourceBackendPayment(sourceType: OMSSourceTypeValue(rawValue: billPayment.type)!)
         case .alipay:
             return __OmiseCapabilitySourceBackendPayment.alipaySourceBackendPayment
         case .promptpay:
@@ -119,7 +119,7 @@ extension __OmiseCapabilityBackendPayment {
         case .truemoney:
             return __OmiseCapabilitySourceBackendPayment.truemoneySourceBackendPayment
         case .points(let points):
-            return __OmiseCapabilitySourceBackendPayment(sourceType: OMSSourceTypeValue(points.type))
+            return __OmiseCapabilitySourceBackendPayment(sourceType: OMSSourceTypeValue(rawValue: points.type)!)
         case .eContext:
             return __OmiseCapabilitySourceBackendPayment.eContextSourceBackendPayment
         case .unknownSource(let type, let configurations):

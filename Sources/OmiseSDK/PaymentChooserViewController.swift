@@ -103,7 +103,7 @@ class PaymentChooserViewController: AdaptableStaticTableViewController<PaymentCh
             updateShowingValues()
         }
     }
-    @objc var allowedPaymentMethods: [OMSSourceTypeValue] = [] {
+    var allowedPaymentMethods: [OMSSourceTypeValue] = [] {
         didSet {
             updateShowingValues()
         }
@@ -292,13 +292,13 @@ class PaymentChooserViewController: AdaptableStaticTableViewController<PaymentCh
             case .truemoney:
                 return OMSSourceTypeValue.trueMoney
             case .points(let points):
-                return OMSSourceTypeValue(points.type)
+                return OMSSourceTypeValue(rawValue: points.type)
             case .installment(let brand, availableNumberOfTerms: _):
-                return OMSSourceTypeValue(brand.type)
+                return OMSSourceTypeValue(rawValue: brand.type)
             case .internetBanking(let bank):
-                return OMSSourceTypeValue(bank.type)
+                return OMSSourceTypeValue(rawValue: bank.type)
             case .billPayment(let billPayment):
-                return OMSSourceTypeValue(billPayment.type)
+                return OMSSourceTypeValue(rawValue: billPayment.type)
             case .eContext:
                 return OMSSourceTypeValue.eContext
             case .card, .unknownSource:

@@ -93,7 +93,7 @@ public class PaymentCreatorController : UINavigationController {
     
     /// Available Source payment options to let user to choose.
     /// The default value is the default available payment method for merchant in Thailand
-    @objc public var allowedPaymentMethods: [OMSSourceTypeValue] = PaymentCreatorController.thailandDefaultAvailableSourceMethods {
+    public var allowedPaymentMethods: [OMSSourceTypeValue] = PaymentCreatorController.thailandDefaultAvailableSourceMethods {
         didSet {
             paymentChooserViewController.allowedPaymentMethods = allowedPaymentMethods
         }
@@ -167,7 +167,7 @@ public class PaymentCreatorController : UINavigationController {
     
     /// Factory method for creating CreditCardFormController with given public key.
     /// - parameter publicKey: Omise public key.
-    @objc(paymentCreatorControllerWithPublicKey:amount:currency:allowedPaymentMethods:paymentDelegate:)
+//    @objc(paymentCreatorControllerWithPublicKey:amount:currency:allowedPaymentMethods:paymentDelegate:)
     public static func __makePaymentCreatorViewControllerWith(
         publicKey: String, amount: Int64, currencyCode: String,
         allowedPaymentMethods: [OMSSourceTypeValue],

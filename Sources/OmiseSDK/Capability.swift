@@ -24,7 +24,7 @@ public struct Capability: Object {
 extension Capability {
     public static func ~=(lhs: Capability, rhs: CreateSourceParameter) -> Bool {
         func backend(from capability: Capability, for payment: PaymentInformation) -> Backend? {
-            let paymentSourceType = OMSSourceTypeValue(payment.sourceType)
+            guard let paymentSourceType = OMSSourceTypeValue(rawValue: payment.sourceType) else { return nil }
             return capability[paymentSourceType]
         }
         
@@ -225,7 +225,7 @@ extension Capability.Backend {
             case creditCardBackendTypeValue:
                 self = .card
             case let value:
-                self = .source(OMSSourceTypeValue(value))
+                self = .source(OMSSourceTypeValue(rawValue: value) ?? .payNow)
             }
         }
         
@@ -249,13 +249,13 @@ extension Capability.Backend {
             case .alipay:
                 self = .source(.alipay)
             case .installment(let brand, availableNumberOfTerms: _):
-                self = .source(OMSSourceTypeValue(brand.type))
+                self = .source(OMSSourceTypeValue(rawValue: brand.type) ?? .payNow)
             case .internetBanking(let banking):
-                self = .source(OMSSourceTypeValue(banking.type))
+                self = .source(OMSSourceTypeValue(rawValue: banking.type) ?? .payNow)
             case .billPayment(let billPayment):
-                self = .source(OMSSourceTypeValue(billPayment.type))
+                self = .source(OMSSourceTypeValue(rawValue: billPayment.type) ?? .payNow)
             case .unknownSource(let sourceType, configurations: _):
-                self = .source(.init(sourceType))
+                self = .source(OMSSourceTypeValue(rawValue: sourceType) ?? .payNow)
             case .promptpay:
                 self = .source(.promptPay)
             case .paynow:
@@ -263,7 +263,7 @@ extension Capability.Backend {
             case .truemoney:
                 self = .source(.trueMoney)
             case .points(let points):
-                self = .source(OMSSourceTypeValue(points.type))
+                self = .source(OMSSourceTypeValue(rawValue: points.type) ?? .payNow)
             case .eContext:
                 self = .source(.eContext)
             }

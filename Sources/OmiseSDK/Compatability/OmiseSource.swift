@@ -39,7 +39,7 @@ import Foundation
 @objc(OMSPaymentInformation)
 @objcMembers
 public class __SourcePaymentInformation: NSObject {
-    @objc public let type: OMSSourceTypeValue
+    public let type: OMSSourceTypeValue
     
     init?(type: OMSSourceTypeValue) {
         self.type = type
@@ -76,7 +76,7 @@ public class __SourceInternetBankingPayment: __SourcePaymentInformation {
     ///
     /// - Parameter type: Source type of the source to be created
     /// - Precondition: type must have a prefix of `internet_banking`
-    @objc public override init?(type: OMSSourceTypeValue) {
+    public override init?(type: OMSSourceTypeValue) {
         guard type.rawValue.hasPrefix(PaymentInformation.InternetBanking.paymentMethodTypePrefix) else {
             return nil
         }
@@ -131,9 +131,9 @@ public class __SourceCustomBarcodePayment: __SourceBarcodePayment {
     /// - Parameters:
     ///   - customType: The type of a source to be created
     ///   - parameters: Parameters of a source to be created
-    @objc public init(customType: String, parameters: [String: Any]) {
+    public init(customType: String, parameters: [String: Any]) {
         self.parameters = parameters
-        super.init(type: OMSSourceTypeValue(rawValue: customType))!
+        super.init(type: OMSSourceTypeValue(rawValue: customType)!)!
     }
 }
 
@@ -149,7 +149,7 @@ public class __SourceInstallmentsPayment: __SourcePaymentInformation {
     /// - Parameters:
     ///   - type: The type of a source to be created
     ///   - numberOfTerms: Number of terms of the installment plan
-    @objc public init?(type: OMSSourceTypeValue, numberOfTerms: Int) {
+    public init?(type: OMSSourceTypeValue, numberOfTerms: Int) {
         guard type.rawValue.hasPrefix(PaymentInformation.Installment.paymentMethodTypePrefix) else {
             return nil
         }
@@ -248,7 +248,7 @@ public class __SourcePointsPayment: __SourcePaymentInformation {
     ///
     /// - Parameter type: Source type of the source to be created
     /// - Precondition: type must have a prefix of `points`
-    @objc public override init?(type: OMSSourceTypeValue) {
+    public override init?(type: OMSSourceTypeValue) {
         guard type.rawValue.hasPrefix(PaymentInformation.Points.paymentMethodTypePrefix) else {
             return nil
         }
@@ -268,9 +268,9 @@ public class __CustomSourcePayment: __SourcePaymentInformation {
     /// - Parameters:
     ///   - customType: The source type of the payment source
     ///   - parameters: The parameter of the payment source
-    @objc public init(customType: String, parameters: [String: Any]) {
+    public init(customType: String, parameters: [String: Any]) {
         self.parameters = parameters
-        super.init(type: OMSSourceTypeValue(rawValue: customType))!
+        super.init(type: OMSSourceTypeValue(rawValue: customType)!)!
     }
 }
 
@@ -377,7 +377,7 @@ extension __SourcePaymentInformation {
         case .billPayment(PaymentInformation.BillPayment.tescoLotus):
             return __SourcePaymentInformation.tescoLotusBillPaymentPayment
         case .billPayment(PaymentInformation.BillPayment.other(let type)):
-            return __SourcePaymentInformation.init(type: OMSSourceTypeValue(type))!
+            return __SourcePaymentInformation.init(type: OMSSourceTypeValue(rawValue: type)!)!
         case .internetBanking(let bank):
             switch bank {
             case .bay:
@@ -389,7 +389,7 @@ extension __SourcePaymentInformation {
             case .bbl:
                 return __SourceInternetBankingPayment.bblInternetBankingPayment
             case .other(let type) where type.hasPrefix(PaymentInformation.InternetBanking.paymentMethodTypePrefix):
-                return __SourceInternetBankingPayment.init(type: OMSSourceTypeValue(type))!
+                return __SourceInternetBankingPayment.init(type: OMSSourceTypeValue(rawValue: type)!)!
             case .other(let type):
                 return __CustomSourcePayment(customType: type, parameters: [:])
             }
@@ -406,7 +406,7 @@ extension __SourcePaymentInformation {
             case .kBank:
                 return __SourceInstallmentsPayment.installmentKBankPayment(withNumberOfTerms: installment.numberOfTerms)
             case .other(let type) where type.hasPrefix(PaymentInformation.Installment.paymentMethodTypePrefix):
-                return __SourceInstallmentsPayment.init(type: OMSSourceTypeValue(type), numberOfTerms: installment.numberOfTerms)!
+                return __SourceInstallmentsPayment.init(type: OMSSourceTypeValue(rawValue: type)!, numberOfTerms: installment.numberOfTerms)!
             case .other(let type):
                 return __CustomSourcePayment(customType: type, parameters: [:])
             }
