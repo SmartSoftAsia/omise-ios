@@ -86,8 +86,6 @@ extension PaymentChooserOption {
             return [.citiPoints]
         case .barcodeAlipay:
             return []
-        default:
-            return []
         }
     }
 }

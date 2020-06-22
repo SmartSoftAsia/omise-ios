@@ -149,11 +149,11 @@ public class AuthorizingPaymentViewController: UIViewController {
     }
     
     @IBAction func cancelAuthorizingPaymentProcess(_ sender: UIBarButtonItem) {
-        if #available(iOSApplicationExtension 10.0, *) {
+        if #available(iOS 10.0, *) {
             os_log("Authorization process was cancelled, trying to notify the delegate", log: uiLogObject, type: .info)
         }
         delegate?.authorizingPaymentViewControllerDidCancel(self)
-        if delegate == nil, #available(iOSApplicationExtension 10.0, *) {
+        if delegate == nil, #available(iOS 10.0, *) {
             os_log("Authorization process was cancelled but no delegate to be notified", log: uiLogObject, type: .default)
         }
     }
@@ -166,7 +166,7 @@ public class AuthorizingPaymentViewController: UIViewController {
             }
             return
         }
-        if #available(iOSApplicationExtension 10.0, *) {
+        if #available(iOS 10.0, *) {
             os_log("Starting the authorizing process with %{private}@ URL", log: uiLogObject, type: .info, authorizedURL.absoluteString)
         }
         let request = URLRequest(url: authorizedURL, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 60.0)
@@ -197,7 +197,7 @@ extension AuthorizingPaymentViewController: WKNavigationDelegate {
                 os_log("Redirected to expected %{private}@ URL but no delegate to be notified", log: uiLogObject, type: .default, url.absoluteString)
             }
         } else {
-            if #available(iOSApplicationExtension 10.0, *) {
+            if #available(iOS 10.0, *) {
                 os_log("Redirected to non-expected %{private}@ URL", log: uiLogObject, type: .debug, navigationAction.request.url?.absoluteString ?? "<empty>")
             }
             decisionHandler(.allow)

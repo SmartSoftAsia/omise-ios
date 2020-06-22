@@ -65,7 +65,7 @@ class TrueMoneyFormViewController: UIViewController, PaymentSourceChooser, Payme
             $0.inputAccessoryView = formFieldsAccessoryView
         })
         
-        if #available(iOSApplicationExtension 10.0, *) {
+        if #available(iOS 10.0, *) {
             formFields.forEach({
                 $0.adjustsFontForContentSizeCategory = true
             })
