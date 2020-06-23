@@ -264,9 +264,9 @@ extension Client {
 // MARK: - Constants
 extension Client {
     static let version: String = {
-        let bundle = Bundle(identifier: "Main")
+        let bundle = Bundle(for: Client.self)
         assert(bundle != nil)
-        return bundle?.infoDictionary?["CFBundleShortVersionString"] as? String ?? "(n/a)"
+        return bundle.infoDictionary?["CFBundleShortVersionString"] as? String ?? "(n/a)"
     }()
     
     static let currentPlatform: String = ProcessInfo.processInfo.operatingSystemVersionString
